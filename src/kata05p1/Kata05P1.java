@@ -9,7 +9,7 @@ import java.sql.Statement;
 public class Kata05P1 {
 
     public static void main(String[] args) {
-        selectAll();
+        createNewTable();
     }
     
     private static Connection connect() {
@@ -23,16 +23,14 @@ public class Kata05P1 {
 	return conn;
     }
     
-    private static void selectAll() {
-	String sql = "SELECT * FROM PEOPLE";
+    private static void createNewTable() {
+	String sql = "CREATE TABLE IF NOT EXISTS email (\n"
+                + "id integer PRIMARY KEY AUTOINCREMENT,\n"
+                + "direccion TEXT NOT NULL);";
         try (Connection conn = connect();
-            Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery(sql)) {
-            while (result.next()) {
-		System.out.printf("Id: %d | Name: %s | Surname: %s | Departament: %s\n",
-		result.getInt("Id"), result.getString("Name"),
-		result.getString("Apellidos"), result.getString("Departamento"));
-            }
+            Statement stmt = conn.createStatement()){
+            stmt.execute(sql);
+            System.out.println("Tabla email creada");
 	} catch (SQLException e) {
             e.printStackTrace();
 	}
